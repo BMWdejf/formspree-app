@@ -1,40 +1,53 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery } from '@apollo/client';
 
 const client = new ApolloClient({
-  uri: 'https://django-tutorial-one.vercel.app/projects/', // Zde vložte URL vašeho GraphQL serveru
+  uri: 'https://countries.trevorblades.com/graphql', // Zde vložte URL vašeho GraphQL serveru
   cache: new InMemoryCache()
 });
 
-const GET_PROJECTS = gql`
-  query GetProjects {
-    projects {
-      name
-      start_date
-      end_date
-      comments
-      status
+const GET_DATA = gql`
+  query GetData {
+    continents {
+      code
+    }
+    countries {
+      code
+    }
+    languages {
+      code
     }
   }
 `;
 
-const Projects = () => {
-  const { loading, error, data } = useQuery(GET_PROJECTS);
+const DataDisplay = () => {
+  const { loading, error, data } = useQuery(GET_DATA);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
 
   return (
     <div>
-      {data.projects.map((project) => (
-        <div key={project.name}>
-          <h3>{project.name}</h3>
-          <p>Start Date: {project.start_date}</p>
-          <p>End Date: {project.end_date}</p>
-          <p>Comments: {project.comments}</p>
-          <p>Status: {project.status}</p>
-        </div>
-      ))}
+      <h3>Continents</h3>
+      <ul>
+        {data.continents.map((continent) => (
+          <li key={continent.code}>{continent.code}</li>
+        ))}
+      </ul>
+
+      <h3>Countries</h3>
+      <ul>
+        {data.countries.map((country) => (
+          <li key={country.code}>{country.code}</li>
+        ))}
+      </ul>
+
+      <h3>Languages</h3>
+      <ul>
+        {data.languages.map((language) => (
+          <li key={language.code}>{language.code}</li>
+        ))}
+      </ul>
     </div>
   );
 };
@@ -43,8 +56,8 @@ const App = () => {
   return (
     <ApolloProvider client={client}>
       <div>
-        <h2>Projects List</h2>
-        <Projects />
+        <h2>Data List</h2>
+        <DataDisplay />
       </div>
     </ApolloProvider>
   );
