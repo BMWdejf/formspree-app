@@ -1,18 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { fetchProjects } from './Axios';
 
 const ProjectList = () => {
   const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get('https://django-tutorial-one.vercel.app/projects/') // Zde nahraďte 'URL_API' skutečnou URL vaší API
-      .then(response => {
-        setProjects(response.data);
-      })
-      .catch(error => {
-        console.error('There was an error fetching the data!', error);
-      });
+    const getProjects = async () => {
+      try {
+        const data = await fetchProjects();
+        setProjects(data);
+      } catch (error) {
+        setError('Error fetching data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getProjects();
   }, []);
+
+  if (loading) {
+    return <p>Loading projects...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
 
   return (
     <div>
@@ -29,7 +44,7 @@ const ProjectList = () => {
           ))}
         </ul>
       ) : (
-        <p>Loading projects...</p>
+        <p>No projects found</p>
       )}
     </div>
   );
