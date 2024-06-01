@@ -6,7 +6,7 @@ const App = () => {
   return (
     <ApolloProvider client={client}>
       <div>
-        <h2>Data List</h2>
+        <h2>Project List</h2>
         <DataDisplay />
       </div>
     </ApolloProvider>
