@@ -3,7 +3,7 @@ import React from 'react';
 import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery } from '@apollo/client';
 
 const client = new ApolloClient({
-  uri: 'https://django-tutorial-one.vercel.app/graphql/', // Zde vložte URL vašeho GraphQL serveru
+  uri: 'https://django-graphql-one.vercel.app/graphql/', // Zde vložte URL vašeho GraphQL serveru
   cache: new InMemoryCache()
 });
 
